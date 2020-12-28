@@ -2,7 +2,8 @@ import React from 'react'
 import './App.css'
 
 interface SpinnerState {
-    pointerIndex: number
+    imageUrl: string
+    message: string
 }
 
 interface SpinnerResult {
@@ -34,32 +35,35 @@ const results: Array<SpinnerResult> = [
 ]
 
 class App extends React.Component<{}, SpinnerState> {
-    readonly state = {pointerIndex: -1}
+    readonly state = {
+        imageUrl: "",
+        message: "click to spin"
+    }
 
     spinSpinner(event: React.MouseEvent) {
         event.preventDefault();
-        const newPointerIndex = Math.trunc(Math.random() * results.length);
+        const newResultIndex = Math.trunc(Math.random() * results.length);
+        const result = results[newResultIndex]
 
         this.setState(() => {
-            return {pointerIndex: newPointerIndex}
+            return {
+                imageUrl: result.imageUrl,
+                message: result.description
+            }
         });
     }
 
-    pointerString() {
-        if (this.state.pointerIndex < 0) {
-            return <p>click to spin</p>
-        } else {
-            const result = results[this.state.pointerIndex]
-
-            return <div><img src={result.imageUrl} alt={result.description}/>
-                <p>{result.description}</p></div>
+    resultImage() {
+        if (this.state.imageUrl.length > 0) {
+            return <img src={this.state.imageUrl} alt={this.state.message}/>
         }
     }
 
     render() {
         return <div className="App" onClick={e => this.spinSpinner(e)}>
             <header className="App-header">
-                {this.pointerString()}
+                {this.resultImage()}
+                <p>{this.state.message}</p>
             </header>
         </div>;
     }
