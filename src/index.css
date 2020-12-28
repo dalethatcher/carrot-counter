@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Index-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #00000000;
+  text-align: center;
+}
