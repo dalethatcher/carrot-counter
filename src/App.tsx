@@ -72,7 +72,6 @@ class App extends React.Component<{}, SpinnerState> {
 
     resultImage() {
         if (this.state.spinning) {
-
             return <div>
                 <Loader
                     type="TailSpin"
@@ -82,6 +81,7 @@ class App extends React.Component<{}, SpinnerState> {
                 />
                 <img src={this.state.imageUrl} alt={this.state.description} style={hiddenStyle}/>
                 <p>spinning...</p>
+                <audio src={process.env.PUBLIC_URL + "/sounds/spin.mp3"} autoPlay={true}/>
             </div>
         }
         if (this.state.imageUrl.length > 0) {

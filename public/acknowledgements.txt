@@ -19,3 +19,8 @@ Wooden plank source image
 License: Freepik License
 Source: https://www.freepik.com/free-vector/cartoon-set-wooden-signboards_7416537.htm
 Artist: Vector created by pch.vector - www.freepik.com
+
+Spinner sound
+License: Attribution 3.0 Unported
+Source: https://freesound.org/people/kramsttop/sounds/170907/
+Artist: kramsttop
