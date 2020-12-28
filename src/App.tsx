@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner'
 
 interface SpinnerState {
     imageUrl: string
-    message: string
+    description: string
     spinning: boolean
 }
 
@@ -17,61 +17,37 @@ interface SpinnerResult {
 const results: Array<SpinnerResult> = [
     {
         description: "send someone back one!",
-        imageUrl: "results/move-back.svg"
+        imageUrl: "move-back.svg"
     },
     {
         description: "forward one or move wooden plank",
-        imageUrl: "results/move-one-or-plank-bridge.svg"
+        imageUrl: "move-one-or-plank-bridge.svg"
     },
     {
         description: "forward one or move rope bridge",
-        imageUrl: "results/move-one-or-rope-bridge.svg"
+        imageUrl: "move-one-or-rope-bridge.svg"
     },
     {
         description: "forward two",
-        imageUrl: "results/move-two.svg"
+        imageUrl: "move-two.svg"
     },
     {
         description: "forward three!",
-        imageUrl: "results/move-three.svg"
+        imageUrl: "move-three.svg"
     }
 ]
+
+const hiddenStyle = {display: "none"}
 
 class App extends React.Component<{}, SpinnerState> {
     readonly state = {
         imageUrl: "",
-        message: "click to spin",
+        description: "click to spin",
         spinning: false
     }
 
-    startSpinner(event: React.MouseEvent) {
-        event.preventDefault()
-
-        if (!this.state.spinning) {
-            this.setState(() => {
-                return {
-                    imageUrl: "",
-                    message: "spinning...",
-                    spinning: true
-                }
-            })
-            setTimeout(() => {
-                const newResultIndex = Math.trunc(Math.random() * results.length);
-                const result = results[newResultIndex]
-
-                this.setState(() => {
-                    return {
-                        imageUrl: result.imageUrl,
-                        message: result.description,
-                        spinning: false
-                    }
-                });
-            }, 1000)
-        }
-    }
-
     spinSpinner(event: React.MouseEvent) {
-        event.preventDefault();
+        event.preventDefault()
 
         if (!this.state.spinning) {
             const newResultIndex = Math.trunc(Math.random() * results.length);
@@ -79,32 +55,49 @@ class App extends React.Component<{}, SpinnerState> {
 
             this.setState(() => {
                 return {
-                    imageUrl: result.imageUrl,
-                    message: result.description
+                    imageUrl: process.env.PUBLIC_URL + "/results/" + result.imageUrl,
+                    description: result.description,
+                    spinning: true
                 }
-            });
+            })
+            setTimeout(() => {
+                this.setState(() => {
+                    return {
+                        spinning: false
+                    }
+                });
+            }, 1000)
         }
     }
 
     resultImage() {
         if (this.state.spinning) {
-            return <Loader
-                type="TailSpin"
-                color="#d93084"
-                height={100}
-                width={100}
-            />
+
+            return <div>
+                <Loader
+                    type="TailSpin"
+                    color="#d93084"
+                    height={100}
+                    width={100}
+                />
+                <img src={this.state.imageUrl} alt={this.state.description} style={hiddenStyle}/>
+                <p>spinning...</p>
+            </div>
         }
         if (this.state.imageUrl.length > 0) {
-            return <img src={this.state.imageUrl} alt={this.state.message}/>
+            return <div>
+                <img src={this.state.imageUrl} alt={this.state.description}/>
+                <p>{this.state.description}</p>
+            </div>
         }
+
+        return <p>{this.state.description}</p>
     }
 
     render() {
-        return <div className="App" onClick={e => this.startSpinner(e)}>
+        return <div className="App" onClick={e => this.spinSpinner(e)}>
             <header className="App-header">
                 {this.resultImage()}
-                <p>{this.state.message}</p>
             </header>
         </div>;
     }
