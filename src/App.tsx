@@ -47,7 +47,7 @@ class App extends React.Component<{}, SpinnerState> {
 
     pointerString() {
         if (this.state.pointerIndex < 0) {
-            return <p>press spin to start</p>
+            return <p>click to spin</p>
         } else {
             const result = results[this.state.pointerIndex]
 
@@ -57,10 +57,9 @@ class App extends React.Component<{}, SpinnerState> {
     }
 
     render() {
-        return <div className="App">
+        return <div className="App" onClick={e => this.spinSpinner(e)}>
             <header className="App-header">
                 {this.pointerString()}
-                <button onClick={e => this.spinSpinner(e)}>Spin</button>
             </header>
         </div>;
     }
