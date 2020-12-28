@@ -5,12 +5,32 @@ interface SpinnerState {
     pointerIndex: number
 }
 
-const choices = [
-    "send someone back one!",
-    "forward one or move wooden plank",
-    "forward one or move rope bridge",
-    "forward two",
-    "forward three!"
+interface SpinnerResult {
+    description: string
+    imageUrl: string
+}
+
+const results: Array<SpinnerResult> = [
+    {
+        description: "send someone back one!",
+        imageUrl: "results/move-back.svg"
+    },
+    {
+        description: "forward one or move wooden plank",
+        imageUrl: "results/move-one-or-plank-bridge.svg"
+    },
+    {
+        description: "forward one or move rope bridge",
+        imageUrl: "results/move-one-or-rope-bridge.svg"
+    },
+    {
+        description: "forward two",
+        imageUrl: "results/move-two.svg"
+    },
+    {
+        description: "forward three!",
+        imageUrl: "results/move-three.svg"
+    }
 ]
 
 class App extends React.Component<{}, SpinnerState> {
@@ -18,7 +38,7 @@ class App extends React.Component<{}, SpinnerState> {
 
     spinSpinner(event: React.MouseEvent) {
         event.preventDefault();
-        const newPointerIndex = Math.trunc(Math.random() * choices.length);
+        const newPointerIndex = Math.trunc(Math.random() * results.length);
 
         this.setState(() => {
             return {pointerIndex: newPointerIndex}
@@ -27,16 +47,19 @@ class App extends React.Component<{}, SpinnerState> {
 
     pointerString() {
         if (this.state.pointerIndex < 0) {
-            return "press spin to start"
+            return <p>press spin to start</p>
         } else {
-            return choices[this.state.pointerIndex]
+            const result = results[this.state.pointerIndex]
+
+            return <div><img src={result.imageUrl} alt={result.description}/>
+                <p>{result.description}</p></div>
         }
     }
 
     render() {
         return <div className="App">
             <header className="App-header">
-                <p>{this.pointerString()}</p>
+                {this.pointerString()}
                 <button onClick={e => this.spinSpinner(e)}>Spin</button>
             </header>
         </div>;
