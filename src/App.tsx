@@ -7,6 +7,7 @@ interface SpinnerState {
     imageUrl: string
     description: string
     spinning: boolean
+    audioRef: React.Ref<HTMLAudioElement>
 }
 
 interface SpinnerResult {
@@ -43,7 +44,8 @@ class App extends React.Component<{}, SpinnerState> {
     readonly state = {
         imageUrl: "",
         description: "click to spin",
-        spinning: false
+        spinning: false,
+        audioRef: React.createRef<HTMLAudioElement>()
     }
 
     spinSpinner(event: React.MouseEvent) {
@@ -53,6 +55,7 @@ class App extends React.Component<{}, SpinnerState> {
             const newResultIndex = Math.trunc(Math.random() * results.length);
             const result = results[newResultIndex]
 
+            this.state.audioRef.current?.play()
             this.setState(() => {
                 return {
                     imageUrl: process.env.PUBLIC_URL + "/results/" + result.imageUrl,
@@ -81,7 +84,6 @@ class App extends React.Component<{}, SpinnerState> {
                 />
                 <img src={this.state.imageUrl} alt={this.state.description} style={hiddenStyle}/>
                 <p>spinning...</p>
-                <audio src={process.env.PUBLIC_URL + "/sounds/spin.mp3"} autoPlay={true}/>
             </div>
         }
         if (this.state.imageUrl.length > 0) {
@@ -97,6 +99,7 @@ class App extends React.Component<{}, SpinnerState> {
     render() {
         return <div className="App" onClick={e => this.spinSpinner(e)}>
             <header className="App-header">
+                <audio ref={this.state.audioRef} src={process.env.PUBLIC_URL + "/sounds/spin.mp3"}/>
                 {this.resultImage()}
             </header>
         </div>;
